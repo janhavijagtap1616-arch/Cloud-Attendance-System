@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login Portal - Cloud Attendance Management System</title>
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/auth.css" />
+</head>
+<body class="auth-page">
+
+  <div class="auth-container">
+    <!-- Left Hero Panel -->
+    <div class="auth-hero-panel">
+      <div class="hero-brand">
+        <div class="hero-brand-logo">
+          <i class="fa-solid fa-cloud-arrow-up"></i>
+        </div>
+        <div>
+          <div class="hero-brand-name">Cloud Attendance</div>
+          <div class="hero-brand-tagline">Academic Management Cloud Platform</div>
+        </div>
+      </div>
+
+      <div class="hero-content">
+        <h1>Seamless, Real-Time Cloud Attendance.</h1>
+        <p>
+          Powered by Google Cloud Firestore. Empowering faculty, students, and administrators with real-time analytics, automated eligibility tracking, and multi-device cloud accessibility.
+        </p>
+
+        <div class="hero-features">
+          <div class="hero-feature-item">
+            <div class="hero-feature-icon"><i class="fa-solid fa-bolt"></i></div>
+            <div>Sub-second real-time Firestore database updates</div>
+          </div>
+          <div class="hero-feature-item">
+            <div class="hero-feature-icon"><i class="fa-solid fa-shield-check"></i></div>
+            <div>Role-based authentication & security isolation</div>
+          </div>
+          <div class="hero-feature-item">
+            <div class="hero-feature-icon"><i class="fa-solid fa-chart-line"></i></div>
+            <div>Automatic percentage computation & CSV reports</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-footer">
+        <div>&copy; 2026 Cloud Computing Project</div>
+        <div class="hero-footer-badge">
+          <i class="fa-solid fa-circle-check"></i> Cloud Ready
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Login Form Panel -->
+    <div class="auth-form-panel">
+      <div class="auth-form-box">
+        <div style="margin-bottom: 1.5rem;">
+          <a href="index.html" style="font-size: 0.875rem; color: var(--text-muted); display: inline-flex; align-items: center; gap: 0.4rem;">
+            <i class="fa-solid fa-arrow-left"></i> Back to Main Portal
+          </a>
+        </div>
+
+        <div class="auth-header">
+          <h2 class="auth-title">Welcome Back</h2>
+          <p class="auth-subtitle">Please select your role and sign in to access your dashboard.</p>
+        </div>
+
+        <!-- Role Selector Tabs -->
+        <div class="role-tabs">
+          <button type="button" class="role-tab-btn active" data-role="admin">
+            <i class="fa-solid fa-shield-halved"></i> Admin
+          </button>
+          <button type="button" class="role-tab-btn" data-role="teacher">
+            <i class="fa-solid fa-chalkboard-user"></i> Teacher
+          </button>
+          <button type="button" class="role-tab-btn" data-role="student">
+            <i class="fa-solid fa-graduation-cap"></i> Student
+          </button>
+        </div>
+
+        <!-- Login Form -->
+        <form id="loginForm">
+          <div class="form-group">
+            <label class="form-label" for="email">Institutional Email Address</label>
+            <div class="form-input-container">
+              <i class="fa-solid fa-envelope form-input-icon"></i>
+              <input type="email" id="email" class="auth-input" placeholder="e.g. user@college.edu" required autocomplete="email" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="password">Account Password</label>
+            <div class="form-input-container">
+              <i class="fa-solid fa-lock form-input-icon"></i>
+              <input type="password" id="password" class="auth-input" placeholder="Enter your password" required autocomplete="current-password" />
+              <button type="button" class="password-toggle-btn" aria-label="Toggle password visibility">
+                <i class="fa-regular fa-eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-options-row">
+            <label class="remember-me">
+              <input type="checkbox" id="rememberMe" checked />
+              <span>Remember me</span>
+            </label>
+            <a href="javascript:void(0)" onclick="showToast('Password Reset', 'Contact the System Administrator to reset your institutional credentials.', 'info')">
+              Forgot password?
+            </a>
+          </div>
+
+          <button type="submit" class="btn btn-primary auth-submit-btn">
+            <i class="fa-solid fa-right-to-bracket"></i> Sign In to Portal
+          </button>
+        </form>
+
+        <!-- Demo Quick-Fill Credentials Card -->
+        <div class="demo-credentials-card">
+          <div class="demo-credentials-header">
+            <span><i class="fa-solid fa-wand-magic-sparkles"></i> 1-Click Demo Login Fill:</span>
+          </div>
+          <div class="demo-pills">
+            <button type="button" class="demo-pill-btn" onclick="switchRoleAndFill('admin')">
+              <i class="fa-solid fa-shield-halved" style="color: #ef4444;"></i> Admin Demo
+            </button>
+            <button type="button" class="demo-pill-btn" onclick="switchRoleAndFill('teacher')">
+              <i class="fa-solid fa-chalkboard-user" style="color: #2563eb;"></i> Teacher Demo
+            </button>
+            <button type="button" class="demo-pill-btn" onclick="switchRoleAndFill('student')">
+              <i class="fa-solid fa-graduation-cap" style="color: #10b981;"></i> Student Demo
+            </button>
+          </div>
+        </div>
+
+        <div class="auth-footer-links">
+          Need database setup? <a href="seed-data.html">Launch Database Seeder</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+  <!-- Application Scripts -->
+  <script src="js/ui-utils.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/auth.js"></script>
+
+  <script>
+    let activeRole = 'admin';
+
+    // Role Tab Switching
+    const tabs = document.querySelectorAll('.role-tab-btn');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        activeRole = tab.getAttribute('data-role');
+      });
+    });
+
+    function switchRoleAndFill(role) {
+      const targetTab = document.querySelector(`.role-tab-btn[data-role="${role}"]`);
+      if (targetTab) {
+        tabs.forEach(t => t.classList.remove('active'));
+        targetTab.classList.add('active');
+        activeRole = role;
+      }
+      fillDemoCredentials(role);
+    }
+
+    // Handle Form Submit
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value.trim();
+      const pass = document.getElementById('password').value.trim();
+      if (!email || !pass) {
+        showToast('Required', 'Please enter both email and password.', 'warning');
+        return;
+      }
+      await loginUser(email, pass, activeRole);
+    });
+
+    // Check URL parameters for preset role
+    const urlParams = new URLSearchParams(window.location.search);
+    const roleParam = urlParams.get('role');
+    if (roleParam && ['admin', 'teacher', 'student'].includes(roleParam.toLowerCase())) {
+      switchRoleAndFill(roleParam.toLowerCase());
+    } else {
+      fillDemoCredentials('admin');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Login - Cloud Attendance Management System</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/auth.css" />
+</head>
+<body class="auth-page">
+
+  <div class="auth-container">
+    <!-- Left Hero Panel -->
+    <div class="auth-hero-panel" style="background: linear-gradient(145deg, #064e3b 0%, #065f46 50%, #059669 100%);">
+      <div class="hero-brand">
+        <div class="hero-brand-logo">
+          <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+        <div>
+          <div class="hero-brand-name">Student Portal</div>
+          <div class="hero-brand-tagline">Cloud Attendance System</div>
+        </div>
+      </div>
+
+      <div class="hero-content">
+        <h1>Track Your Academic Attendance in Real Time.</h1>
+        <p>
+          View daily lecture check-ins, monitor your subject-wise attendance percentage, stay above the 75% college eligibility threshold, and download personalized reports.
+        </p>
+
+        <div class="hero-features">
+          <div class="hero-feature-item">
+            <div class="hero-feature-icon"><i class="fa-solid fa-calendar-day"></i></div>
+            <div>Instant check on today's lecture attendance</div>
+          </div>
+          <div class="hero-feature-item">
+            <div class="hero-feature-icon"><i class="fa-solid fa-chart-pie"></i></div>
+            <div>Subject-wise breakdown & eligibility gauge</div>
+          </div>
+          <div class="hero-feature-item">
+            <div class="hero-feature-icon"><i class="fa-solid fa-file-arrow-down"></i></div>
+            <div>1-click download of attendance statement (CSV)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-footer">
+        <div>&copy; 2026 Cloud Computing Project</div>
+        <div class="hero-footer-badge">
+          <i class="fa-solid fa-graduation-cap"></i> Student Desk
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Login Form Panel -->
+    <div class="auth-form-panel">
+      <div class="auth-form-box">
+        <div style="margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between;">
+          <a href="index.html" style="font-size: 0.875rem; color: var(--text-muted); display: inline-flex; align-items: center; gap: 0.4rem;">
+            <i class="fa-solid fa-arrow-left"></i> Main Portal
+          </a>
+          <span class="role-badge-pill role-student">
+            <i class="fa-solid fa-graduation-cap"></i> Student
+          </span>
+        </div>
+
+        <div class="auth-header">
+          <h2 class="auth-title">Student Sign In</h2>
+          <p class="auth-subtitle">Log in to view your attendance progress and records.</p>
+        </div>
+
+        <form id="studentLoginForm">
+          <div class="form-group">
+            <label class="form-label" for="studentEmail">Student Email</label>
+            <div class="form-input-container">
+              <i class="fa-solid fa-envelope form-input-icon"></i>
+              <input type="email" id="studentEmail" class="auth-input" placeholder="student@college.edu" required autocomplete="email" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="studentPassword">Password</label>
+            <div class="form-input-container">
+              <i class="fa-solid fa-lock form-input-icon"></i>
+              <input type="password" id="studentPassword" class="auth-input" placeholder="••••••••" required autocomplete="current-password" />
+              <button type="button" class="password-toggle-btn" aria-label="Toggle password visibility">
+                <i class="fa-regular fa-eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-options-row">
+            <label class="remember-me">
+              <input type="checkbox" checked />
+              <span>Remember me</span>
+            </label>
+            <a href="javascript:void(0)" onclick="showToast('Password Reset', 'Please contact your college registrar to reset your student password.', 'info')">
+              Forgot password?
+            </a>
+          </div>
+
+          <button type="submit" class="btn btn-primary auth-submit-btn" style="background: linear-gradient(135deg, #059669, #047857);">
+            <i class="fa-solid fa-graduation-cap"></i> Access Student Dashboard
+          </button>
+        </form>
+
+        <div class="demo-credentials-card">
+          <div class="demo-credentials-header">
+            <span><i class="fa-solid fa-key"></i> Quick Demo Student Access:</span>
+          </div>
+          <button type="button" class="demo-pill-btn" onclick="fillStudentDemo()" style="width: 100%; justify-content: center;">
+            <i class="fa-solid fa-wand-magic-sparkles" style="color: #10b981;"></i> Autofill <code>student@college.edu</code>
+          </button>
+        </div>
+
+        <div class="auth-footer-links">
+          Switch role: <a href="login-admin.html">Admin Login</a> | <a href="login-teacher.html">Teacher Login</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+  <!-- Application Scripts -->
+  <script src="js/ui-utils.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/auth.js"></script>
+
+  <script>
+    function fillStudentDemo() {
+      document.getElementById('studentEmail').value = 'student@college.edu';
+      document.getElementById('studentPassword').value = 'password123';
+      showToast('Student Demo Loaded', 'Credentials ready: student@college.edu / password123', 'info');
+    }
+
+    document.getElementById('studentLoginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('studentEmail').value.trim();
+      const pass = document.getElementById('studentPassword').value.trim();
+      await loginUser(email, pass, 'student');
+    });
+
+    document.addEventListener('DOMContentLoaded', fillStudentDemo);
+  </script>
+</body>
+</html>

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cloud-Based Attendance Management System</title>
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <!-- Core Design System -->
+  <link rel="stylesheet" href="css/style.css" />
+
+  <style>
+    .hero-banner {
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #2563eb 100%);
+      color: #ffffff;
+      padding: 5rem 2rem 4rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-banner::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cloud-pill-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(8px);
+      padding: 0.45rem 1.25rem;
+      border-radius: var(--radius-full);
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+    .portal-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      max-width: 1140px;
+      margin: -3.5rem auto 4rem auto;
+      padding: 0 1.5rem;
+      position: relative;
+      z-index: 10;
+    }
+    .portal-card {
+      background: #ffffff;
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border-light);
+      padding: 2.25rem 2rem;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: var(--transition);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .portal-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-xl);
+    }
+    .portal-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+    }
+    .portal-card.admin-card::before { background: linear-gradient(90deg, #ef4444, #f87171); }
+    .portal-card.teacher-card::before { background: linear-gradient(90deg, #2563eb, #60a5fa); }
+    .portal-card.student-card::before { background: linear-gradient(90deg, #10b981, #34d399); }
+
+    .portal-icon-wrapper {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      margin: 0 auto 1.5rem auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+    }
+    .portal-card.admin-card .portal-icon-wrapper { background: #fee2e2; color: #dc2626; }
+    .portal-card.teacher-card .portal-icon-wrapper { background: #eff6ff; color: #2563eb; }
+    .portal-card.student-card .portal-icon-wrapper { background: #ecfdf5; color: #059669; }
+
+    .portal-title {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 0.75rem;
+    }
+    .portal-desc {
+      font-size: 0.925rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 1.75rem;
+    }
+    .portal-features-list {
+      list-style: none;
+      text-align: left;
+      margin-bottom: 2rem;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+    .portal-features-list li {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+    .portal-features-list i {
+      color: var(--primary-600);
+      font-size: 0.85rem;
+    }
+
+    .features-section {
+      max-width: 1140px;
+      margin: 2rem auto 5rem auto;
+      padding: 0 1.5rem;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+    .feature-item-card {
+      background: #ffffff;
+      padding: 1.75rem;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-sm);
+    }
+    .feature-item-card i {
+      font-size: 1.75rem;
+      color: var(--primary-600);
+      margin-bottom: 1rem;
+    }
+    .footer {
+      background: #ffffff;
+      border-top: 1px solid var(--border-light);
+      padding: 2.5rem 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Firebase Configuration Notice Banner -->
+  <div id="configNoticePlaceholder"></div>
+
+  <!-- Hero Section -->
+  <header class="hero-banner">
+    <div style="max-width: 820px; margin: 0 auto; position: relative; z-index: 2;">
+      <div class="cloud-pill-tag">
+        <i class="fa-solid fa-cloud"></i> Google Cloud Firestore & Firebase Auth Powered
+      </div>
+      <h1 style="font-size: 2.85rem; font-weight: 800; line-height: 1.15; margin-bottom: 1.25rem; letter-spacing: -0.02em;">
+        Cloud-Based Attendance Management System
+      </h1>
+      <p style="font-size: 1.15rem; color: var(--primary-100); line-height: 1.6; margin-bottom: 2rem;">
+        A high-performance cloud solution for modern academic institutions. Features real-time Firestore synchronization, automated attendance percentage analytics, role-based dashboards, and CSV reporting.
+      </p>
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="login.html" class="btn btn-primary btn-lg" style="background: #ffffff; color: var(--primary-800);">
+          <i class="fa-solid fa-right-to-bracket"></i> Unified Login Portal
+        </a>
+        <a href="seed-data.html" class="btn btn-lg" style="background: rgba(255, 255, 255, 0.15); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.3);">
+          <i class="fa-solid fa-database"></i> Setup / Seed Cloud Data
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Role Selection Cards -->
+  <main class="portal-cards-grid">
+    
+    <!-- Admin Portal -->
+    <div class="portal-card admin-card">
+      <div>
+        <div class="portal-icon-wrapper">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <h2 class="portal-title">Admin Portal</h2>
+        <p class="portal-desc">
+          Complete administrative control over institutional academic operations, faculty rosters, student enrollment, and attendance records.
+        </p>
+        <ul class="portal-features-list">
+          <li><i class="fa-solid fa-check"></i> Overall institutional KPI analytics</li>
+          <li><i class="fa-solid fa-check"></i> Manage students & faculty profiles</li>
+          <li><i class="fa-solid fa-check"></i> Configure classes, sections & subjects</li>
+          <li><i class="fa-solid fa-check"></i> Comprehensive attendance logs & export</li>
+        </ul>
+      </div>
+      <a href="login-admin.html" class="btn btn-outline-primary" style="color: #dc2626; border-color: #fca5a5;">
+        <i class="fa-solid fa-arrow-right"></i> Admin Login
+      </a>
+    </div>
+
+    <!-- Teacher Portal -->
+    <div class="portal-card teacher-card">
+      <div>
+        <div class="portal-icon-wrapper">
+          <i class="fa-solid fa-chalkboard-user"></i>
+        </div>
+        <h2 class="portal-title">Teacher Portal</h2>
+        <p class="portal-desc">
+          Take classroom attendance in seconds with real-time Firestore sync, duplicate entry prevention, and instant editing capabilities.
+        </p>
+        <ul class="portal-features-list">
+          <li><i class="fa-solid fa-check"></i> Assigned class & subject roster loader</li>
+          <li><i class="fa-solid fa-check"></i> 1-click "Mark All Present/Absent"</li>
+          <li><i class="fa-solid fa-check"></i> Prevent duplicate entries per session</li>
+          <li><i class="fa-solid fa-check"></i> Daily & monthly class reports to CSV</li>
+        </ul>
+      </div>
+      <a href="login-teacher.html" class="btn btn-primary">
+        <i class="fa-solid fa-arrow-right"></i> Teacher Login
+      </a>
+    </div>
+
+    <!-- Student Portal -->
+    <div class="portal-card student-card">
+      <div>
+        <div class="portal-icon-wrapper">
+          <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+        <h2 class="portal-title">Student Portal</h2>
+        <p class="portal-desc">
+          Check real-time attendance statistics, monitor eligibility percentages, view subject-wise breakdowns, and download statements.
+        </p>
+        <ul class="portal-features-list">
+          <li><i class="fa-solid fa-check"></i> Personal profile & academic standing</li>
+          <li><i class="fa-solid fa-check"></i> Daily subject-wise attendance check</li>
+          <li><i class="fa-solid fa-check"></i> Automatic 75% eligibility indicator</li>
+          <li><i class="fa-solid fa-check"></i> Download personal attendance CSV</li>
+        </ul>
+      </div>
+      <a href="login-student.html" class="btn btn-outline-primary" style="color: #059669; border-color: #a7f3d0;">
+        <i class="fa-solid fa-arrow-right"></i> Student Login
+      </a>
+    </div>
+
+  </main>
+
+  <!-- Cloud Computing Architecture Highlights -->
+  <section class="features-section">
+    <div style="text-align: center; max-width: 650px; margin: 0 auto;">
+      <span class="badge badge-primary">Cloud Computing Architecture</span>
+      <h2 style="font-size: 2rem; font-weight: 800; color: var(--text-primary); margin: 0.5rem 0 0.75rem 0;">
+        Engineered for High Reliability & Scalability
+      </h2>
+      <p style="color: var(--text-muted); font-size: 0.95rem;">
+        Leveraging Google Firebase's serverless infrastructure to provide instant synchronization, role-based security, and cloud scalability.
+      </p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-item-card">
+        <i class="fa-solid fa-cloud-arrow-up"></i>
+        <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.4rem;">Cloud Firestore Database</h3>
+        <p style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.6;">
+          NoSQL document-based cloud storage with sub-second real-time listeners across students, teachers, classes, subjects, and attendance.
+        </p>
+      </div>
+
+      <div class="feature-item-card">
+        <i class="fa-solid fa-lock"></i>
+        <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.4rem;">Firebase Authentication</h3>
+        <p style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.6;">
+          Secure identity verification with encrypted credentials and granular role-based access policies (Admin, Teacher, Student).
+        </p>
+      </div>
+
+      <div class="feature-item-card">
+        <i class="fa-solid fa-file-csv"></i>
+        <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.4rem;">CSV Reporting Engine</h3>
+        <p style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.6;">
+          Export detailed student and class attendance audit records formatted for spreadsheet analysis and institutional records.
+        </p>
+      </div>
+
+      <div class="feature-item-card">
+        <i class="fa-solid fa-mobile-screen-button"></i>
+        <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.4rem;">Cross-Device Responsive</h3>
+        <p style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.6;">
+          Adaptive mobile, tablet, and desktop dashboards designed with an accessible blue, white, and light-grey color combination.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div style="max-width: 1140px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+      <div>
+        <strong>Cloud-Based Attendance Management System</strong> | College Degree Cloud Computing Project
+      </div>
+      <div>
+        <a href="seed-data.html" style="margin-right: 1.25rem;">Database Seeder</a>
+        <a href="login.html">Login Portal</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Firebase Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+  <!-- Application Scripts -->
+  <script src="js/ui-utils.js"></script>
+  <script src="js/firebase-config.js"></script>
+</body>
+</html>

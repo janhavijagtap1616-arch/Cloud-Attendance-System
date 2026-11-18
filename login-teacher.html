@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Teacher Login - Cloud Attendance Management System</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/auth.css" />
+</head>
+<body class="auth-page">
+
+  <div class="auth-container">
+    <!-- Left Hero Panel -->
+    <div class="auth-hero-panel" style="background: linear-gradient(145deg, #1e3a8a 0%, #1e40af 50%, #2563eb 100%);">
+      <div class="hero-brand">
+        <div class="hero-brand-logo">
+          <i class="fa-solid fa-chalkboard-user"></i>
+        </div>
+        <div>
+          <div class="hero-brand-name">Faculty Portal</div>
+          <div class="hero-brand-tagline">Cloud Attendance System</div>
+        </div>
+      </div>
+
+      <div class="hero-content">
+        <h1>Classroom Attendance Made Effortless.</h1>
+        <p>
+          Quickly select your assigned class and subject, record presence or absence with a single tap, prevent duplicate session entries, and sync with Cloud Firestore in real time.
+        </p>
+
+        <div class="hero-features">
+          <div class="hero-feature-item">
+            <div class="hero-feature-icon"><i class="fa-solid fa-users-viewfinder"></i></div>
+            <div>Dynamic roster loader by class & section</div>
+          </div>
+          <div class="hero-feature-item">
+            <div class="hero-feature-icon"><i class="fa-solid fa-check-double"></i></div>
+            <div>1-click 'Mark All Present' with instant toggle</div>
+          </div>
+          <div class="hero-feature-item">
+            <div class="hero-feature-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+            <div>Direct Firestore sync without duplicate records</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-footer">
+        <div>&copy; 2026 Cloud Computing Project</div>
+        <div class="hero-footer-badge">
+          <i class="fa-solid fa-chalkboard-user"></i> Faculty Zone
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Login Form Panel -->
+    <div class="auth-form-panel">
+      <div class="auth-form-box">
+        <div style="margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between;">
+          <a href="index.html" style="font-size: 0.875rem; color: var(--text-muted); display: inline-flex; align-items: center; gap: 0.4rem;">
+            <i class="fa-solid fa-arrow-left"></i> Main Portal
+          </a>
+          <span class="role-badge-pill role-teacher">
+            <i class="fa-solid fa-chalkboard-user"></i> Faculty / Teacher
+          </span>
+        </div>
+
+        <div class="auth-header">
+          <h2 class="auth-title">Teacher Sign In</h2>
+          <p class="auth-subtitle">Log in to mark and manage your lecture attendance.</p>
+        </div>
+
+        <form id="teacherLoginForm">
+          <div class="form-group">
+            <label class="form-label" for="teacherEmail">Faculty Email</label>
+            <div class="form-input-container">
+              <i class="fa-solid fa-envelope form-input-icon"></i>
+              <input type="email" id="teacherEmail" class="auth-input" placeholder="teacher@college.edu" required autocomplete="email" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="teacherPassword">Password</label>
+            <div class="form-input-container">
+              <i class="fa-solid fa-lock form-input-icon"></i>
+              <input type="password" id="teacherPassword" class="auth-input" placeholder="••••••••" required autocomplete="current-password" />
+              <button type="button" class="password-toggle-btn" aria-label="Toggle password visibility">
+                <i class="fa-regular fa-eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-options-row">
+            <label class="remember-me">
+              <input type="checkbox" checked />
+              <span>Remember me</span>
+            </label>
+            <a href="javascript:void(0)" onclick="showToast('Password Help', 'Contact your Department Admin to reset your faculty account.', 'info')">
+              Forgot password?
+            </a>
+          </div>
+
+          <button type="submit" class="btn btn-primary auth-submit-btn">
+            <i class="fa-solid fa-right-to-bracket"></i> Sign In to Teacher Dashboard
+          </button>
+        </form>
+
+        <div class="demo-credentials-card">
+          <div class="demo-credentials-header">
+            <span><i class="fa-solid fa-key"></i> Quick Demo Teacher Access:</span>
+          </div>
+          <button type="button" class="demo-pill-btn" onclick="fillTeacherDemo()" style="width: 100%; justify-content: center;">
+            <i class="fa-solid fa-wand-magic-sparkles" style="color: #2563eb;"></i> Autofill <code>teacher@college.edu</code>
+          </button>
+        </div>
+
+        <div class="auth-footer-links">
+          Switch role: <a href="login-admin.html">Admin Login</a> | <a href="login-student.html">Student Login</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+  <!-- Application Scripts -->
+  <script src="js/ui-utils.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/auth.js"></script>
+
+  <script>
+    function fillTeacherDemo() {
+      document.getElementById('teacherEmail').value = 'teacher@college.edu';
+      document.getElementById('teacherPassword').value = 'password123';
+      showToast('Teacher Demo Loaded', 'Credentials ready: teacher@college.edu / password123', 'info');
+    }
+
+    document.getElementById('teacherLoginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('teacherEmail').value.trim();
+      const pass = document.getElementById('teacherPassword').value.trim();
+      await loginUser(email, pass, 'teacher');
+    });
+
+    document.addEventListener('DOMContentLoaded', fillTeacherDemo);
+  </script>
+</body>
+</html>
